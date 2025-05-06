@@ -1,5 +1,6 @@
-import Image from "next/image";
 import { defineField, defineType } from "sanity";
+// Remove the import for Image from "next/image"; as it's not used here
+// import Image from "next/image";
 
 export const enrollmentTypes = defineType({
   name: "enrollment",
@@ -51,20 +52,15 @@ export const enrollmentTypes = defineType({
       courseTitle: "course.title",
       studentFirstName: "student.firstName",
       studentLastName: "student.lastName",
-      studentImage: "student.imageUrl",
+      // Assuming 'image' is the name of the image field on your 'student' schema
+      studentImage: "student.image", // Select the image field itself, not just a URL
     },
     prepare({ courseTitle, studentFirstName, studentLastName, studentImage }) {
       return {
         title: `${studentFirstName} ${studentLastName}`,
         subtitle: courseTitle,
-        media: (
-          <Image
-            src={studentImage}
-            alt={`${studentFirstName} ${studentLastName}`}
-            width={100}
-            height={100}
-          />
-        ),
+        // Provide the selected image asset reference directly to the media property
+        media: studentImage,
       };
     },
   },

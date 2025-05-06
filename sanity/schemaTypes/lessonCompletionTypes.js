@@ -1,6 +1,8 @@
-import Image from "next/image";
+// Remove the import for Image from "next/image"; as it's not used here
+// import Image from "next/image";
 import { defineField, defineType } from "sanity";
-import { urlFor } from "../lib/image";
+// Keep urlFor import if you use it elsewhere in the studio, but it's not needed for the preview media property directly
+// import { urlFor } from "../lib/image";
 
 export const lessonCompletionTypes = defineType({
   name: "lessonCompletion",
@@ -25,7 +27,7 @@ export const lessonCompletionTypes = defineType({
       name: "module",
       title: "Module",
       type: "reference",
-      to: [{ type: "modules" }],
+      to: [{ type: "modules" }], // Assuming 'modules' is the correct type name
       validation: (Rule) => Rule.required().error("Module is required"),
     }),
     defineField({
@@ -48,22 +50,21 @@ export const lessonCompletionTypes = defineType({
       courseTitle: "course.title",
       lessonTitle: "lesson.title",
       completedAt: "completedAt",
+      // Select the actual image asset field from the course document
       courseImage: "course.image",
     },
     prepare({ courseTitle, lessonTitle, completedAt, courseImage }) {
+      // Handle potential null/undefined titles gracefully
+      const displayTitle = `${courseTitle || "Untitled Course"}: ${lessonTitle || "Untitled Lesson"}`;
+
       return {
-        title: `${courseTitle || "Course"}: ${lessonTitle || "Lesson"}`,
+        title: displayTitle,
         subtitle: completedAt
           ? `Completed on ${new Date(completedAt).toLocaleDateString()}`
           : "Not completed",
-        media: (
-          <Image
-            src={urlFor(courseImage).url()}
-            alt={courseTitle}
-            width={100}
-            height={100}
-          />
-        ),
+        // Provide the selected image asset object directly to the media property
+        // Sanity Studio knows how to render this as a thumbnail.
+        media: courseImage,
       };
     },
   },
