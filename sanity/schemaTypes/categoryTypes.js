@@ -48,14 +48,7 @@ export const categoryTypes = defineType({
       description:
         "Icon identifier from lucide-react. For example: book-open, book-marked, etc.",
     }),
-    defineField({
-      name: "image",
-      title: "Image",
-      type: "image",
-      options: {
-        hotspot: true,
-      },
-    }),
+
     defineField({
       name: "courses",
       title: "Courses",
