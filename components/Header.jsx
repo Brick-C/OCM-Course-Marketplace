@@ -8,7 +8,7 @@ import SearchInput from "./SearchInput";
 
 const Header = () => {
   return (
-    <header className=" top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-2 py-2 md:px-6 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border px-2 py-2 md:px-6 flex items-center justify-between">
       <div className="container mx-auto flex items-center justify-between px-4">
         {/* left */}
         <div className="flex h-11 items-center gap-4">

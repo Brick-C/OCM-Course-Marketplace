@@ -1,3 +1,5 @@
+import { studentTypes } from "./studentTypes";
+
 export const schema = {
-  types: [],
-}
+  types: [studentTypes],
+};
