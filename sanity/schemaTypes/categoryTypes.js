@@ -104,12 +104,7 @@ export const categoryTypes = defineType({
         ],
       },
     }),
-    defineField({
-      name: "author",
-      title: "Author",
-      type: "reference",
-      to: [{ type: "user" }],
-    }),
+
     defineField({
       name: "featured",
       title: "Featured",
@@ -117,4 +112,6 @@ export const categoryTypes = defineType({
       initialValue: false,
     }),
   ],
+
+  // Not finishsed
 });

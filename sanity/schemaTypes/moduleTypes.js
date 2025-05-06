@@ -19,7 +19,7 @@ export const moduleTypes = defineType({
       of: [
         {
           type: "reference",
-          to: [{ type: "lessons" }],
+          to: [{ type: "lesson" }],
         },
       ],
     }),
