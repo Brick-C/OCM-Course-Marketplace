@@ -435,6 +435,47 @@ export type GetCoursesQueryResult = Array<{
   } | null;
 }>;
 
+// Source: sanity/lib/courses/searchCourses.js
+// Variable: searchQuery
+// Query: *[_type == "course" && (title match $term + "*" || description match $term + "*" || category->name match $term + "*")]{      _id,      title,      description,      "slug": slug.current,      "category": category->{name},      "instructor": instructor->{name, image},      price,      image    }
+export type SearchQueryResult = Array<{
+  _id: string;
+  title: string | null;
+  description: string | null;
+  slug: string | null;
+  category: {
+    name: null;
+  } | null;
+  instructor: {
+    name: string | null;
+    image: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    } | null;
+  } | null;
+  price: number | null;
+  image: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  } | null;
+}>;
+
 // Source: sanity/lib/student/getStudentByClerkId.js
 // Variable: getStudentByClerkIdQuery
 // Query: *[_type == "student" && clerkId == $clerkId[0]]
@@ -456,6 +497,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"course\"]{\n    ..., \"slug\": slug.current, \n    \"category\":category->{...},\n    \"instructor\":instructor->{...}\n        }": GetCoursesQueryResult;
+    "\n    *[_type == \"course\" && (title match $term + \"*\" || description match $term + \"*\" || category->name match $term + \"*\")]{\n      _id,\n      title,\n      description,\n      \"slug\": slug.current,\n      \"category\": category->{name},\n      \"instructor\": instructor->{name, image},\n      price,\n      image\n    }\n  ": SearchQueryResult;
     "*[_type == \"student\" && clerkId == $clerkId[0]]": GetStudentByClerkIdQueryResult;
   }
 }
