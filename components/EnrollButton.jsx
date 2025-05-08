@@ -1,6 +1,6 @@
 "use client";
 
-//import { createStripeCheckout } from "@/actions/createStripeCheckout";
+import { createStripeCheckout } from "@/actions/createStripeCheckout";
 import { useUser } from "@clerk/nextjs";
 import { CheckCircle } from "lucide-react";
 import Link from "next/link";

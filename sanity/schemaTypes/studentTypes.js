@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { defineField, defineType } from "sanity";
 // Remove the import for Image from "next/image"; as it's not used here
 // import Image from "next/image";
@@ -50,7 +51,14 @@ export const studentTypes = defineType({
         // Capitalize first letter of first and last names for the title
         title: `${safeFirstName.charAt(0).toUpperCase()}${safeFirstName.slice(1)} ${safeLastName.charAt(0).toUpperCase()}${safeLastName.slice(1)}`,
         // Provide the imageUrl string directly to the media property
-        media: imageUrl,
+        media: (
+          <Image
+            src={imageUrl}
+            alt={`${firstName} ${lastName}`}
+            width={100}
+            height={100}
+          />
+        ),
       };
     },
   },

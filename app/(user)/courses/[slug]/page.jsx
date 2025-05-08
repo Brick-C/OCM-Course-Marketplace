@@ -2,7 +2,7 @@ import EnrollButton from "@/components/EnrollButton";
 import getCourseBySlug from "@/sanity/lib/courses/getCourseBySlug";
 import { urlFor } from "@/sanity/lib/image";
 import { isEnrolledInCourse } from "@/sanity/lib/student/isEnrolledInCourse";
-import { getAuth } from "@clerk/nextjs/server";
+import { auth } from "@clerk/nextjs/server";
 import { ArrowLeft, BookOpen } from "lucide-react";
 import { headers } from "next/headers";
 import Image from "next/image";
@@ -12,10 +12,10 @@ import React from "react";
 export default async function CoursePage({ params }) {
   const { slug } = await params;
   const course = await getCourseBySlug(slug);
+  const userId = await auth();
 
   //get request headers
   const requestHeaders = await headers();
-  const { userId } = getAuth({ headers: requestHeaders });
 
   const isEnrolled =
     userId && course?._id
@@ -36,7 +36,7 @@ export default async function CoursePage({ params }) {
       <div className="relative h-[60vh] w-full">
         {course.image && (
           <Image
-            src={urlFor(course.image).url() || ""}
+            src={urlFor(course.image).url() || null}
             alt={course.title || "Course Title"}
             fill
             className="object-cover"

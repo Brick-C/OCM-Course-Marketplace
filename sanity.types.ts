@@ -435,6 +435,115 @@ export type GetCoursesQueryResult = Array<{
   } | null;
 }>;
 
+// Source: sanity/lib/courses/getCoursesById.js
+// Variable: getCourseByIdQuery
+// Query: *[_type == "course" && _id == $id][0] {      ...,  // Spread all course fields      "category": category->{...},  // Expand the category reference, including all its fields      "instructor": instructor->{...},  // Expand the instructor reference, including all its fields      "modules": modules[]-> {  // Expand the array of module references        ...,  // Include all module fields        "lessons": lessons[]-> {...}  // For each module, expand its array of lesson references      }    }
+export type GetCourseByIdQueryResult = {
+  _id: string;
+  _type: "course";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  price?: number;
+  slug?: Slug;
+  description?: string;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  category: {
+    _id: string;
+    _type: "category";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    title?: "blockchain" | "cloud-computing" | "cyber-security" | "data-science" | "devops" | "game-development" | "machine-learning" | "mobile-development" | "web-development";
+    slug?: Slug;
+    description?: string;
+    icon?: string;
+    courses?: Array<{
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      _key: string;
+      [internalGroqTypeReferenceTo]?: "course";
+    }>;
+    createdAt?: string;
+    updatedAt?: string;
+    publishedAt?: string;
+    status?: "archived" | "draft" | "published";
+    featured?: boolean;
+  } | null;
+  modules: Array<{
+    _id: string;
+    _type: "modules";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    title?: string;
+    lessons: Array<{
+      _id: string;
+      _type: "lesson";
+      _createdAt: string;
+      _updatedAt: string;
+      _rev: string;
+      title?: string;
+      slug?: Slug;
+      description?: string;
+      videoUrl?: string;
+      loomUrl?: string;
+      content?: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }>;
+    }> | null;
+  }> | null;
+  instructor: {
+    _id: string;
+    _type: "instructor";
+    _createdAt: string;
+    _updatedAt: string;
+    _rev: string;
+    name?: string;
+    bio?: string;
+    image?: {
+      asset?: {
+        _ref: string;
+        _type: "reference";
+        _weak?: boolean;
+        [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+      };
+      media?: unknown;
+      hotspot?: SanityImageHotspot;
+      crop?: SanityImageCrop;
+      _type: "image";
+    };
+  } | null;
+} | null;
+
 // Source: sanity/lib/courses/searchCourses.js
 // Variable: searchQuery
 // Query: *[_type == "course" && (title match $term + "*" || description match $term + "*" || category->name match $term + "*")]{      _id,      title,      description,      "slug": slug.current,      "category": category->{name},      "instructor": instructor->{name, image},      price,      image    }
@@ -492,12 +601,44 @@ export type GetStudentByClerkIdQueryResult = Array<{
   imageUrl?: string;
 }>;
 
+// Source: sanity/lib/student/isEnrolledInCourse.js
+// Variable: studentQuery
+// Query: *[_type == "student" && clerkId == $clerkId][0]._id
+export type StudentQueryResult = string | null;
+// Variable: enrollmentQuery
+// Query: *[_type == "enrollment" && student._ref == $studentId && course._ref == $courseId][0]
+export type EnrollmentQueryResult = {
+  _id: string;
+  _type: "enrollment";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  student?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "student";
+  };
+  course?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "course";
+  };
+  amount?: number;
+  paymentId?: string;
+  enrolledAt?: string;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "*[_type == \"course\"]{\n    ..., \"slug\": slug.current, \n    \"category\":category->{...},\n    \"instructor\":instructor->{...}\n        }": GetCoursesQueryResult;
+    "*[_type == \"course\" && _id == $id][0] {\n      ...,  // Spread all course fields\n      \"category\": category->{...},  // Expand the category reference, including all its fields\n      \"instructor\": instructor->{...},  // Expand the instructor reference, including all its fields\n      \"modules\": modules[]-> {  // Expand the array of module references\n        ...,  // Include all module fields\n        \"lessons\": lessons[]-> {...}  // For each module, expand its array of lesson references\n      }\n    }": GetCourseByIdQueryResult;
     "\n    *[_type == \"course\" && (title match $term + \"*\" || description match $term + \"*\" || category->name match $term + \"*\")]{\n      _id,\n      title,\n      description,\n      \"slug\": slug.current,\n      \"category\": category->{name},\n      \"instructor\": instructor->{name, image},\n      price,\n      image\n    }\n  ": SearchQueryResult;
     "*[_type == \"student\" && clerkId == $clerkId[0]]": GetStudentByClerkIdQueryResult;
+    "*[_type == \"student\" && clerkId == $clerkId][0]._id": StudentQueryResult;
+    "*[_type == \"enrollment\" && student._ref == $studentId && course._ref == $courseId][0]": EnrollmentQueryResult;
   }
 }
