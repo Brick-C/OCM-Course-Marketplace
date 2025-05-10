@@ -44,8 +44,8 @@ export default async function CoursePage({ params }: CoursePageProps) {
             priority
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black to-black/60" />
-        <div className="absolute inset-0 container mx-auto px-4 flex flex-col justify-end pb-12">
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-black/50" />
+        <div className="absolute inset-0 container mx-auto px-4 sm:px-6 md:px-8 flex flex-col justify-end pb-12">
           <Link
             href="/"
             prefetch={false}
@@ -61,15 +61,15 @@ export default async function CoursePage({ params }: CoursePageProps) {
                   {course.category?.name || "Uncategorized"}
                 </span>
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
                 {course.title}
               </h1>
-              <p className="text-lg text-white/90 max-w-2xl">
+              <p className="text-base sm:text-lg md:text-xl text-white/90 max-w-2xl">
                 {course.description}
               </p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-6 md:min-w-[300px]">
-              <div className="text-3xl font-bold text-white mb-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4 sm:p-6 md:min-w-[300px]">
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-4">
                 {course.price === 0 ? "Free" : `$${course.price}`}
               </div>
               <EnrollButton courseId={course._id} isEnrolled={isEnrolled} />
@@ -79,12 +79,14 @@ export default async function CoursePage({ params }: CoursePageProps) {
       </div>
 
       {/* Content Section */}
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 py-8 sm:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 sm:gap-12">
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <div className="bg-card rounded-lg p-6 mb-8 border border-border">
-              <h2 className="text-2xl font-bold mb-4">Course Content</h2>
+            <div className="bg-card rounded-lg p-4 sm:p-6 mb-8 border border-border">
+              <h2 className="text-xl sm:text-2xl font-bold mb-4">
+                Course Content
+              </h2>
               <div className="space-y-4">
                 {course.modules?.map((module, index) => (
                   <div
@@ -124,13 +126,13 @@ export default async function CoursePage({ params }: CoursePageProps) {
 
           {/* Sidebar */}
           <div>
-            <div className="bg-card rounded-lg p-6 sticky top-4 border border-border">
-              <h2 className="text-xl font-bold mb-4">Instructor</h2>
+            <div className="bg-card rounded-lg p-4 sm:p-6 sticky top-4 border border-border">
+              <h2 className="text-lg sm:text-xl font-bold mb-4">Instructor</h2>
               {course.instructor && (
                 <div>
                   <div className="flex items-center gap-3 mb-4">
                     {course.instructor.photo && (
-                      <div className="relative h-12 w-12">
+                      <div className="relative h-10 w-10 sm:h-12 sm:w-12">
                         <Image
                           src={urlFor(course.instructor.photo).url() || ""}
                           alt={course.instructor.name || "Course Instructor"}
@@ -149,7 +151,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
                     </div>
                   </div>
                   {course.instructor.bio && (
-                    <p className="text-muted-foreground">
+                    <p className="text-sm sm:text-base text-muted-foreground">
                       {course.instructor.bio}
                     </p>
                   )}
