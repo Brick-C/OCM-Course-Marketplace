@@ -8,8 +8,8 @@ import {
   GetCoursesQueryResult,
   GetEnrolledCoursesQueryResult,
 } from "../sanity.types";
-import { Loader } from "./ui/loader";
 import { CourseProgress } from "./CourseProgress";
+import "./styles/courseCard.css";
 
 interface CourseCardProps {
   course:
@@ -23,32 +23,31 @@ interface CourseCardProps {
 
 export function CourseCard({ course, progress, href }: CourseCardProps) {
   return (
-    <Link
-      href={href}
-      prefetch={false}
-      className="group hover:no-underline flex"
-    >
-      <div className="bg-card rounded-xl overflow-hidden shadow-lg transition-all duration-300 ease-in-out hover:shadow-xl hover:translate-y-[-4px] border border-border flex flex-col flex-1">
-        <div className="relative h-52 w-full overflow-hidden">
+    <Link href={href} prefetch={false} className="course-card-link-wrapper">
+      <div className="course-card-container">
+        <div className="course-card-image-wrapper">
           {course.image ? (
             <Image
               src={urlFor(course.image).url() || ""}
               alt={course.title || "Course Image"}
               fill
-              className="object-cover transition-transform duration-300 group-hover:scale-110"
+              className="course-card-image"
             />
           ) : (
-            <div className="h-full w-full flex items-center justify-center bg-muted">
-              <Loader size="lg" />
+            <div className="course-card-placeholder-image">
+              <BookOpen className="course-card-placeholder-icon" />
             </div>
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-300" />
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between">
-            <span className="text-sm font-medium px-3 py-1 bg-black/50 text-white rounded-full backdrop-blur-sm">
+
+          <div className="course-card-image-overlay" />
+
+          <div className="course-card-tags-container">
+            <span className="course-card-category-tag">
               {course.category?.name || "Uncategorized"}
             </span>
+
             {"price" in course && typeof course.price === "number" && (
-              <span className="text-white font-bold px-3 py-1 bg-black/50 dark:bg-white/20 rounded-full backdrop-blur-sm">
+              <span className="course-card-price-tag">
                 {course.price === 0
                   ? "Free"
                   : `$${course.price.toLocaleString("en-US", {
@@ -58,36 +57,33 @@ export function CourseCard({ course, progress, href }: CourseCardProps) {
             )}
           </div>
         </div>
-        <div className="p-6 flex flex-col flex-1">
-          <h3 className="text-xl font-bold mb-2 group-hover:text-primary transition-colors duration-300">
-            {course.title}
-          </h3>
-          <p className="text-muted-foreground mb-4 line-clamp-2 flex-1">
-            {course.description}
-          </p>
-          <div className="space-y-4 mt-auto">
+
+        <div className="course-card-body">
+          <h3 className="course-card-title">{course.title}</h3>
+          <p className="course-card-description">{course.description}</p>
+
+          <div className="course-card-footer-section">
             {course.instructor && (
-              <div className="flex items-center justify-between">
-                <div className="flex items-center">
+              <div className="course-card-instructor-info">
+                <div className="course-card-instructor-details">
                   {course.instructor.photo ? (
-                    <div className="relative h-8 w-8 mr-2">
+                    <div className="course-card-instructor-photo-wrapper">
                       <Image
                         src={urlFor(course.instructor.photo).url() || ""}
                         alt={course.instructor.name || "Instructor"}
                         fill
-                        className="rounded-full object-cover"
+                        className="course-card-instructor-photo"
                       />
                     </div>
                   ) : (
-                    <div className="h-8 w-8 mr-2 rounded-full bg-muted flex items-center justify-center">
-                      <Loader size="sm" />
+                    <div className="course-card-instructor-placeholder">
+                      <BookOpen className="course-card-instructor-placeholder-icon" />
                     </div>
                   )}
-                  <span className="text-sm text-muted-foreground">
+                  <span className="course-card-instructor-name">
                     by {course.instructor.name}
                   </span>
                 </div>
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
               </div>
             )}
             {typeof progress === "number" && (

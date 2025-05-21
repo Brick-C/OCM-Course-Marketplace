@@ -1,0 +1,106 @@
+.hero-container {
+  position: relative;
+  height: 50vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+.hero-overlay-top {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.55)
+  );
+}
+
+.dark .hero-overlay-top {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.15),
+    rgba(0, 0, 0, 0.4)
+  );
+}
+
+.hero-overlay-bottom {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--background),
+    rgba(var(--background-rgb), 0.8) 80%,
+    rgba(var(--background-rgb), 0.2) 100%
+  );
+}
+
+.hero-content-wrapper {
+  position: relative;
+  max-width: 1200px;
+  margin: 1.5rem auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.hero-text-container {
+  max-width: 48rem;
+}
+
+.hero-title {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background-image: linear-gradient(
+    to right,
+    var(--foreground),
+    rgba(var(--foreground-rgb), 0.8)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero-description {
+  font-size: 1rem;
+  color: var(--muted-foreground);
+}
+
+@media (min-width: 640px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+  .hero-description {
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-title {
+    font-size: 3.75rem;
+  }
+  .hero-description {
+    font-size: 1.25rem;
+  }
+}
+
+/* Define CSS variables for background, foreground, and muted-foreground colors */
+:root {
+  --background: #f4f3f3ca;
+  --background-rgb: 248, 249, 250;
+  --foreground: #000000;
+  --foreground-rgb: 33, 37, 41;
+  --muted-foreground: #3c3333;
+}
+
+.dark {
+  --background: #1a202c;
+  --background-rgb: 26, 32, 44;
+  --foreground: #e2e8f0;
+  --foreground-rgb: 226, 232, 240;
+  --muted-foreground: #a0aec0;
+}

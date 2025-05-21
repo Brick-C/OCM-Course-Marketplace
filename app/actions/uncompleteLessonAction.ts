@@ -2,8 +2,6 @@
 
 import { uncompleteLessonById } from "../../sanity/lib/lessons/uncompleteLessonById";
 
-//import { uncompleteLessonById } from "@/sanity/lib/lessons/uncompleteLessonById";
-
 export async function uncompleteLessonAction(
   lessonId: string,
   clerkId: string
