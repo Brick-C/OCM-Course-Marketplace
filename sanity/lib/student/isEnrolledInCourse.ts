@@ -3,7 +3,6 @@ import { sanityFetch } from "../live";
 
 export async function isEnrolledInCourse(clerkId: string, courseId: string) {
   try {
-    // First get the student document using clerkId
     const studentQuery = groq`*[_type == "student" && clerkId == $clerkId][0]._id`;
     const studentId = await sanityFetch({
       query: studentQuery,
@@ -15,7 +14,6 @@ export async function isEnrolledInCourse(clerkId: string, courseId: string) {
       return false;
     }
 
-    // Then check for enrollment using the student's Sanity document ID
     const enrollmentQuery = groq`*[_type == "enrollment" && student._ref == $studentId && course._ref == $courseId][0]`;
     const enrollment = await sanityFetch({
       query: enrollmentQuery,

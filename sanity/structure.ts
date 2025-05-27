@@ -5,9 +5,9 @@ export const structure = (S: StructureBuilder) =>
   S.list()
     .title("Admin Dashboard")
     .items([
-      // Course Content
+      // Course Management
       S.listItem()
-        .title("Course Content")
+        .title("Course Management")
         .child(
           S.documentTypeList("course")
             .title("Courses")

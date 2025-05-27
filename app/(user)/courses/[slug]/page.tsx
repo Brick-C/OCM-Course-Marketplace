@@ -76,7 +76,6 @@ export default async function CoursePage({ params }: CoursePageProps) {
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="content-section-wrapper">
         <div className="content-grid">
           <div className="course-modules-main">

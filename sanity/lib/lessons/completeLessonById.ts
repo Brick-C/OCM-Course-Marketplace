@@ -11,7 +11,6 @@ export async function completeLessonById({
   clerkId: string;
 }) {
   try {
-    // Get Sanity student ID from Clerk ID
     const student = await getStudentByClerkId(clerkId);
 
     if (!student?.data?._id) {
@@ -20,7 +19,6 @@ export async function completeLessonById({
 
     const studentId = student.data._id;
 
-    // Check if lesson is already completed
     const existingCompletion = await sanityFetch({
       query: groq`*[_type == "lessonCompletion" && student._ref == $studentId && lesson._ref == $lessonId][0]`,
       params: { studentId, lessonId },
@@ -30,7 +28,6 @@ export async function completeLessonById({
       return existingCompletion.data;
     }
 
-    // Fetch lesson details to get module and course
     const lesson = await sanityFetch({
       query: groq`*[_type == "lesson" && _id == $lessonId][0]{
         _id,
@@ -46,7 +43,6 @@ export async function completeLessonById({
       throw new Error("Could not find module or course for lesson");
     }
 
-    // Create new completion record
     const completion = await client.create({
       _type: "lessonCompletion",
       student: {

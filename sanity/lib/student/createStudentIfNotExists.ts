@@ -17,7 +17,6 @@ export async function createStudentIfNotExists({
   lastName,
   imageUrl,
 }: CreateStudentProps) {
-  // First check if student exists
   const existingStudentQuery = await sanityFetch({
     query: groq`*[_type == "student" && clerkId == $clerkId][0]`,
     params: { clerkId },
@@ -28,7 +27,6 @@ export async function createStudentIfNotExists({
     return existingStudentQuery.data;
   }
 
-  // If no student exists, create a new one
   const newStudent = await client.create({
     _type: "student",
     clerkId,

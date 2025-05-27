@@ -5,7 +5,6 @@ import { calculateCourseProgress } from "../../../lib/courseProgress";
 import { Module } from "../../../sanity.types";
 
 export async function getCourseProgress(clerkId: string, courseId: string) {
-  // First get the student's Sanity ID
   const student = await getStudentByClerkId(clerkId);
 
   if (!student?.data?._id) {

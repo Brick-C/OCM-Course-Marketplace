@@ -11,7 +11,6 @@ import { createEnrollment } from "../sanity/lib/student/createEnrollment";
 
 export async function createStripeCheckout(courseId: string, userId: string) {
   try {
-    // 1. Query course details from Sanity
     const course = await getCourseById(courseId);
     const clerkUser = await (await clerkClient()).users.getUser(userId);
     const { emailAddresses, firstName, lastName, imageUrl } = clerkUser;
@@ -25,7 +24,7 @@ export async function createStripeCheckout(courseId: string, userId: string) {
       throw new Error("Course not found");
     }
 
-    // mid step - create a user in sanity if it doesn't exist
+    //studetn does not exist
     const user = await createStudentIfNotExists({
       clerkId: userId,
       email: email || "",
@@ -38,13 +37,12 @@ export async function createStripeCheckout(courseId: string, userId: string) {
       throw new Error("User not found");
     }
 
-    // 2. Validate course data and prepare price for Stripe
     if (!course.price && course.price !== 0) {
       throw new Error("Course price is not set");
     }
     const priceInCents = Math.round(course.price * 100);
 
-    // if course is free, create enrollment and redirect to course page (BYPASS STRIPE CHECKOUT)
+    // free courses
     if (priceInCents === 0) {
       await createEnrollment({
         studentId: user._id,
@@ -62,7 +60,6 @@ export async function createStripeCheckout(courseId: string, userId: string) {
       throw new Error("Course data is incomplete");
     }
 
-    // 3. Create and configure Stripe Checkout Session with course details
     const session = await stripe.checkout.sessions.create({
       line_items: [
         {
@@ -87,7 +84,6 @@ export async function createStripeCheckout(courseId: string, userId: string) {
       },
     });
 
-    // 4. Return checkout session URL for client redirect
     return { url: session.url };
   } catch (error) {
     console.error("Error in createStripeCheckout:", error);

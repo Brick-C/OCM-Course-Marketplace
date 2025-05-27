@@ -6,7 +6,6 @@ export async function getLessonCompletionStatus(
   lessonId: string,
   clerkId: string
 ) {
-  // First get the student's Sanity ID
   const student = await getStudentByClerkId(clerkId);
 
   if (!student?.data?._id) {
