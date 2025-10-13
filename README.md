@@ -25,7 +25,7 @@ NEXT_PUBLIC_BASE_URL = [http://localhost:3000](http://localhost:3000/)
 
 ```
 
-First, run the development server:
+Second, run the development server:
 
 ```bash
 npm run dev
