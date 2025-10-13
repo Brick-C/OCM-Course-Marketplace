@@ -1,6 +1,29 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
+First, create .env file and add the following:
+```
+#Sanity
+NEXT_PUBLIC_SANITY_PROJECT_ID=""
+NEXT_PUBLIC_SANITY_DATASET="production"
+SANITY_STUDIO_DATASET="production"
+SANITY_STUDIO_PROJECT_ID=""
+SANITY_API_TOKEN=
+SANITY_API_ADMIN_TOKEN=
+
+#Clerk
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+CLERK_SECRET_KEY=
+
+# #stripe
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+
+#Nextjs
+NEXT_PUBLIC_BASE_URL = [http://localhost:3000](http://localhost:3000/)
+
+```
 
 First, run the development server:
 
